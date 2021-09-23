@@ -1,0 +1,33 @@
+name: nifty
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - cudatoolkit=10.2
+  - pytorch::torchvision
+  - pytorch::torchaudio
+  - pytorch::pytorch
+  - conda-forge::pycocotools
+  - conda-forge::vigra
+  # Working from now on:
+  - conda-forge::h5py
+  - conda-forge::pyyaml
+  - conda-forge::scipy
+  - conda-forge::boost-cpp
+  - conda-forge::pillow
+  - conda-forge::munkres
+  - conda-forge::xtensor-python
+  - conda-forge::scikit-learn
+  - conda-forge::scikit-image
+  - conda-forge::ipython
+  - conda-forge::tensorboardx
+  - conda-forge::dill
+  - conda-forge::jupyter
+  - conda-forge::tqdm
+  - conda-forge::psutil
+  - conda-forge::opencv
+  - conda-forge::tifffile
+  - conda-forge::cmake=3.17
+  - conda-forge::htop
+

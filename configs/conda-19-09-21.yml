@@ -1,0 +1,31 @@
+name: nifty
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - cudatoolkit=10.1
+  - pytorch::torchvision=0.8.2
+  - pytorch::torchaudio=0.7.2
+  - pytorch::pytorch=1.7.1
+  - pycocotools
+  - vigra
+  - h5py
+  - pyyaml
+  - scipy
+  - boost-cpp
+  - pillow
+  - munkres
+  - xtensor-python
+  - scikit-learn
+  - scikit-image
+  - ipython
+  - tensorboardx
+  - dill
+  - jupyter
+  - tqdm
+  - psutil
+  - opencv
+  - tifffile
+  - cmake=3.17
+  - htop

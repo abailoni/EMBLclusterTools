@@ -7,8 +7,9 @@ path_file = "/Users/alberto-mac/EMBL_repos/EMBLclusterTools/configs/pycharm_path
 
 pycharm_paths = genfromtxt(path_file, delimiter=';',encoding="utf8", dtype=None)
 
+print(pycharm_paths)
 for local_path, remote_path in pycharm_paths:
     # if "nifty" in local_path:
     print("\n\n## ---- Copying {} ---- ##".format(local_path))
-    command = "rsync -chavzP --stats {}/ sergio:{}".format(local_path, remote_path)
+    command = "rsync -chavzP --stats {}/ datatransfer:{}".format(local_path, remote_path)
     unknown_dir = os.system(command)

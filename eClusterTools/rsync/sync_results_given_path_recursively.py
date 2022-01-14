@@ -17,8 +17,8 @@ SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
                  "/Users/alberto-mac/sshfs_vol/g_shared",]
 MAIN_DIR_SERVER = ["/scratch/bailoni",
                    "/g/scb/alexandr"]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch",
-                          "/home/bailoni/g_shared"]
+MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch2",
+                          "/home/bailoni/g_shared2"]
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scripts parameters')

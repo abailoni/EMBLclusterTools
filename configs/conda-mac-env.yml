@@ -1,0 +1,29 @@
+name: nifty
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - conda-forge::python=3.8
+  - conda-forge::vigra
+  # Working from now on:
+  - conda-forge::h5py
+  - conda-forge::pyyaml
+  - conda-forge::scipy
+  - conda-forge::pillow
+  - conda-forge::munkres
+  - conda-forge::scikit-learn
+  - conda-forge::scikit-image
+  - conda-forge::ipython
+  - conda-forge::dill
+  - conda-forge::jupyter
+  - conda-forge::tqdm
+  - conda-forge::psutil
+  - conda-forge::opencv
+  - conda-forge::tifffile
+  - conda-forge::nifty
+  - conda-forge::affogato
+  - conda-forge::napari
+#  - conda-forge::cmake=3.17
+#  - conda-forge::htop
+
+

@@ -3,7 +3,7 @@ from eClusterTools.paths import get_scratch_dir
 import os
 
 # path_file = os.path.join(get_scratch_dir(), "pyCh_repos/EMBLclusterTools/configs/pycharm_paths.csv")
-path_file = "/Users/alberto-mac/EMBL_repos/EMBLclusterTools/configs/pycharm_paths.csv"
+path_file = "/Users/alberto-mac/EMBL_repos/EMBLclusterTools/configs/pycharm_paths_v3.csv"
 
 pycharm_paths = genfromtxt(path_file, delimiter=';',encoding="utf8", dtype=None)
 

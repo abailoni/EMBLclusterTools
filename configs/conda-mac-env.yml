@@ -23,6 +23,14 @@ dependencies:
   - conda-forge::nifty
   - conda-forge::affogato
   - conda-forge::napari
+  - pip
+  - pip:
+      - PyQt5
+      - PyQt5.sip
+#  TODO: replace with:
+#  - pyqt-impl
+#  - pyqt5-sip
+
 #  - conda-forge::cmake=3.17
 #  - conda-forge::htop
 

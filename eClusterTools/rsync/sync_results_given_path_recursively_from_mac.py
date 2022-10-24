@@ -12,13 +12,21 @@ def check_dir_and_create(directory):
 import argparse
 
 MAIN_DIR_MAC = ["/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/scratch",
-                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_shared"]
+                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_shared",
+                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/data_bailoni",
+                ]
 SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
-                 "/Users/alberto-mac/sshfs_vol/g_shared",]
+                 "/Users/alberto-mac/sshfs_vol/g_shared",
+                 "/Users/alberto-mac/sshfs_vol/data_bailoni", # FIXME
+                 ]
 MAIN_DIR_SERVER = ["/scratch/bailoni",
-                   "/g/scb/alexandr"]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch2",
-                          "/home/bailoni/g_shared2"]
+                   "/g/scb/alexandr",
+                   "/home/bailoni/data_bailoni"
+                   ]
+MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch3",
+                          "/home/bailoni/g_shared3",
+                          "/home/bailoni/data_bailoni",
+                          ]
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scripts parameters')
@@ -35,7 +43,7 @@ if __name__ == '__main__':
     # Create dir:
     given_path_base = None
     selected_path_type = None
-    for idx in range(2):
+    for idx in range(len(MAIN_DIR_MAC)):
         if MAIN_DIR_MAC[idx] in dir_path:
             given_path_base = MAIN_DIR_MAC[idx]
         if given_path_base is not None:
@@ -61,7 +69,7 @@ if __name__ == '__main__':
     print(is_dir)
     source_dir = os.path.join(dir_path_mac, "") if is_dir else dir_path_mac
     rsync_options = "-zar" if is_dir else "-avz"
-    command = 'gpg -d -q --pinentry-mode=loopback --passphrase 8426 ~/.embl2.gpg > fifo; sshpass -f fifo rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args -e "ssh -p 22" "{}" "datatransfer:{}"'.format(
+    command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args -e "ssh -p 22" "{}" "datatransfer:{}"'.format(
         rsync_options, target_dir, source_dir, target_dir)
     print(command)
     os.system(command)

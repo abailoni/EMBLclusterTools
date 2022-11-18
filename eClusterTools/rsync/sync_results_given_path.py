@@ -23,18 +23,21 @@ import argparse
 MAIN_DIR_MAC = ["/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/scratch",
                 "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_shared",
                 "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/data_bailoni",
+                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_alexandr",
                 ]
-SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
-                 "/Users/alberto-mac/sshfs_vol/g_shared",
-                 "/Users/alberto-mac/sshfs_vol/data_bailoni", # FIXME
-                 ]
-MAIN_DIR_SERVER = ["/scratch/bailoni",
+# SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
+#                  "/Users/alberto-mac/sshfs_vol/g_shared",
+#                  "/Users/alberto-mac/sshfs_vol/data_bailoni", # FIXME
+#                  ]
+MAIN_DIR_SERVER = ["/scratch",
                    "/g/scb/alexandr",
-                   "/home/bailoni/data_bailoni"
+                   "/home/bailoni/data_bailoni",
+                   "/g/alexandr"
                    ]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch3",
-                          "/home/bailoni/g_shared3",
+MAIN_DIR_DATATRANSFERR = ["/home/bailoni/full_scratch",
+                          "/g/scb/alexandr",
                           "/home/bailoni/data_bailoni",
+                          "/g/alexandr"
                           ]
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scripts parameters')
@@ -59,8 +62,8 @@ if __name__ == '__main__':
             given_path_base = MAIN_DIR_SERVER[idx]
         elif MAIN_DIR_MAC[idx] in dir_path:
             given_path_base = MAIN_DIR_MAC[idx]
-        elif SSHFS_DIR_MAC[idx] in dir_path:
-            given_path_base = SSHFS_DIR_MAC[idx]
+        # elif SSHFS_DIR_MAC[idx] in dir_path:
+        #     given_path_base = SSHFS_DIR_MAC[idx]
         if given_path_base is not None:
             selected_path_type = idx
             break

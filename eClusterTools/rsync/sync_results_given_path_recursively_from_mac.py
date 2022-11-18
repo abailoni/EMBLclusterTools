@@ -1,5 +1,6 @@
 import os
 
+
 def check_dir_and_create(directory):
     '''
     if the directory does not exist, create it
@@ -9,23 +10,27 @@ def check_dir_and_create(directory):
         os.makedirs(directory)
     return folder_exists
 
+
 import argparse
 
-MAIN_DIR_MAC = ["/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/scratch",
-                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_shared",
+MAIN_DIR_MAC = ["/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/scratch/bailoni",
+                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_shared/shared",
                 "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/data_bailoni",
+                "/Users/alberto-mac/Documents/DA_ESPORTARE/LOCAL_EMBL_FILES/g_alexandr/bailoni",
                 ]
-SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
-                 "/Users/alberto-mac/sshfs_vol/g_shared",
-                 "/Users/alberto-mac/sshfs_vol/data_bailoni", # FIXME
-                 ]
+# SSHFS_DIR_MAC = ["/Users/alberto-mac/sshfs_vol/scratch",
+#                  "/Users/alberto-mac/sshfs_vol/g_shared",
+#                  "/Users/alberto-mac/sshfs_vol/data_bailoni", # FIXME
+#                  ]
 MAIN_DIR_SERVER = ["/scratch/bailoni",
-                   "/g/scb/alexandr",
-                   "/home/bailoni/data_bailoni"
+                   "/g/scb/alexandr/shared",
+                   "/home/bailoni/data_bailoni",
+                   "/g/alexandr/bailoni"
                    ]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/scratch3",
-                          "/home/bailoni/g_shared3",
+MAIN_DIR_DATATRANSFERR = ["/home/bailoni/full_scratch/bailoni",
+                          "/g/scb/alexandr/shared",
                           "/home/bailoni/data_bailoni",
+                          "/g/alexandr/bailoni"
                           ]
 
 if __name__ == '__main__':
@@ -62,7 +67,6 @@ if __name__ == '__main__':
     target_dir = dir_data_transfer if is_dir else containing_dir_data_transfer
     # check_dir_and_create(target_dir)
 
-
     # os.system(open_finder)
 
     # Now start syncing:
@@ -73,4 +77,3 @@ if __name__ == '__main__':
         rsync_options, target_dir, source_dir, target_dir)
     print(command)
     os.system(command)
-

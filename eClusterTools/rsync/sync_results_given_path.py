@@ -34,7 +34,7 @@ MAIN_DIR_SERVER = ["/scratch",
                    "/home/bailoni/data_bailoni",
                    "/g/alexandr"
                    ]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/full_scratch",
+MAIN_DIR_DATATRANSFERR = ["/scratch",
                           "/g/scb/alexandr",
                           "/home/bailoni/data_bailoni",
                           "/g/alexandr"
@@ -70,6 +70,9 @@ if __name__ == '__main__':
 
     assert isinstance(given_path_base, str), "Path not recognised"
 
+    # Choose to which server to connect:
+    server_name = "login" if selected_path_type == 0 else "datatransfer"
+
     rel_path = os.path.relpath(dir_path, given_path_base)
     dir_path_mac = os.path.join(MAIN_DIR_MAC[selected_path_type], rel_path)
     dir_data_transfer = os.path.join(MAIN_DIR_DATATRANSFERR[selected_path_type], rel_path)
@@ -96,8 +99,7 @@ if __name__ == '__main__':
 
     # Now start syncing:
     rsync_options = "-zar -f '- /*/*'"
-    command = 'rsync {} --protect-args --progress -e "ssh -p 22" "datatransfer:{}" "{}"'.format(
-        rsync_options, os.path.join(dir_data_transfer, "*"), target_dir)
+    command = f'rsync {rsync_options} --protect-args --progress -e "ssh -p 22" "{server_name}:{os.path.join(dir_data_transfer, "*")}" "{target_dir}"'
     # command = 'gpg -d -q --pinentry-mode=loopback --passphrase 8426 ~/.embl2.gpg > fifo; sshpass -f fifo rsync {} --protect-args --progress -e "ssh -p 22" "datatransfer:{}" "{}"'.format(
     #     rsync_options, os.path.join(dir_data_transfer, "*"), target_dir)
     # print(command)

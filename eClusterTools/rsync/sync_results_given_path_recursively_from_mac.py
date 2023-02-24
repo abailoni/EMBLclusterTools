@@ -27,7 +27,7 @@ MAIN_DIR_SERVER = ["/scratch/bailoni",
                    "/home/bailoni/data_bailoni",
                    "/g/alexandr/bailoni"
                    ]
-MAIN_DIR_DATATRANSFERR = ["/home/bailoni/full_scratch/bailoni",
+MAIN_DIR_DATATRANSFERR = ["/scratch/bailoni",
                           "/g/scb/alexandr/shared",
                           "/home/bailoni/data_bailoni",
                           "/g/alexandr/bailoni"
@@ -57,6 +57,11 @@ if __name__ == '__main__':
 
     assert isinstance(given_path_base, str), "Path not recognised"
 
+
+    # Choose to which server to connect:
+    server_name = "login" if selected_path_type == 0 else "datatransfer"
+
+
     rel_path = os.path.relpath(dir_path, given_path_base)
     rel_path_containing_dir = os.path.relpath(containing_dir, given_path_base)
     dir_path_mac = os.path.join(MAIN_DIR_MAC[selected_path_type], rel_path)
@@ -73,7 +78,7 @@ if __name__ == '__main__':
     print(is_dir)
     source_dir = os.path.join(dir_path_mac, "") if is_dir else dir_path_mac
     rsync_options = "-zar" if is_dir else "-avz"
-    command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args -e "ssh -p 22" "{}" "datatransfer:{}"'.format(
-        rsync_options, target_dir, source_dir, target_dir)
+    command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args -e "ssh -p 22" "{}" "{}:{}"'.format(
+        rsync_options, target_dir, source_dir, server_name, target_dir)
     print(command)
     os.system(command)

@@ -51,9 +51,9 @@ if __name__ == '__main__':
     selected_path_type = None
     print(dir_path)
     for idx in range(len(MAIN_DIR_MAC)):
-        if MAIN_DIR_SERVER[idx] in dir_path:
+        if dir_path.startswith(MAIN_DIR_SERVER[idx]):
             given_path_base = MAIN_DIR_SERVER[idx]
-        elif MAIN_DIR_MAC[idx] in dir_path:
+        elif dir_path.startswith(MAIN_DIR_MAC[idx]):
             given_path_base = MAIN_DIR_MAC[idx]
         # elif SSHFS_DIR_MAC[idx] in dir_path:
         #     given_path_base = SSHFS_DIR_MAC[idx]

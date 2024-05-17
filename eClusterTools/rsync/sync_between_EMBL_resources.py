@@ -1,5 +1,6 @@
 import os
 import sys
+from pathlib import Path
 
 import argparse
 
@@ -17,11 +18,13 @@ MAIN_DIR_SERVER = ["/scratch/bailoni",
 
 
 if __name__ == '__main__':
-    assert len(sys.argv) == 4
+    assert (len(sys.argv) == 4) or (len(sys.argv) == 5)
     dir_path = sys.argv[1]
     args_source = sys.argv[2]
     args_target = sys.argv[3]
-
+    zip_zarr_microscopy = True
+    if len(sys.argv) == 5:
+        zip_zarr_microscopy = False
 
     # parser = argparse.ArgumentParser(description='Scripts parameters')
     # parser.add_argument('-p', '--path', required=True,
@@ -41,7 +44,7 @@ if __name__ == '__main__':
     extension = os.path.splitext(path_tail)[1]
     is_dir = extension == ""
     # assert extension == "", "This is not a directory but a file!"
-    assert args_target in shortcuts_keys, "Target not recognized"
+    assert args_target in shortcuts_keys, "Target not recognized, choose between {}".format(shortcuts_keys)
     target_index = shortcuts_keys.index(args_target)
 
     # Create dir:
@@ -78,9 +81,45 @@ if __name__ == '__main__':
     # Create destination folder:
     os.makedirs(target_rsync, exist_ok=True)
 
+    if not zip_zarr_microscopy:
+        command = 'rsync -a --delete --progress "{}" "{}"'.format(
+            source_rsync, target_rsync)
+        # command = 'rsync -avxHAX --progress "{}" "{}"'.format(
+        #     source_rsync, target_rsync)
+        os.system(command)
+    else:
+        # First, we rsync all files/folders in `source_rsync` that are not folders named `microscopy.zarr` (including subfolders) to `target_rsync`:
+        command = 'rsync -a --delete --progress --exclude="microscopy.zarr" "{}" "{}"'.format(
+            source_rsync, target_rsync)
+        os.system(command)
+        # We loop over each folder named `microscopy.zarr` in `source_rsync` (including subfolders named `microscopy.zarr`)
+        for root, dirs, files in os.walk(source_rsync):
+            if "microscopy.zarr" in dirs:
+                microscopy_zarr_folder = os.path.join(root, "microscopy.zarr")
+                root_folder_target = os.path.join(target_rsync,
+                                                             Path(source_rsync).name,
+                                                             os.path.relpath(root, source_rsync))
+                # Zip the content of the folder named `microscopy.zarr` in `source_rsync`:
+                print("Zipping content of folder '{}'...".format(microscopy_zarr_folder))
+                command = 'cd "{}" && tar -zcf microscopy.zarr.tar.gz microscopy.zarr'.format(
+                    root)
+                os.system(command)
+                # Copy the zipped content to the correct subfolder of `target_rsync`:
+                os.makedirs(root_folder_target, exist_ok=True)
+                command = 'cp "{}/microscopy.zarr.tar.gz" "{}"'.format(
+                    root, root_folder_target)
+                print("Copying zipped content...")
+                os.system(command)
+                # Unzip the zipped content in the correct subfolder of `target_rsync`:
+                print("Unzipping content and cleaning up...")
+                command = 'cd "{}" && tar -xzf microscopy.zarr.tar.gz'.format(
+                    root_folder_target)
+                os.system(command)
+                # Remove the zipped content in the correct subfolder of `target_rsync` and the zipped content in `source_rsync`:
+                command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
+                    root_folder_target)
+                os.system(command)
+                command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
+                    root)
+                os.system(command)
 
-    command = 'rsync -a --delete --progress "{}" "{}"'.format(
-        source_rsync, target_rsync)
-    # command = 'rsync -avxHAX --progress "{}" "{}"'.format(
-    #     source_rsync, target_rsync)
-    os.system(command)

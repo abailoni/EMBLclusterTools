@@ -1,8 +1,23 @@
 import os
 import sys
-from pathlib import Path
+
+def check_dir_and_create(directory):
+    '''
+    if the directory does not exist, create it
+    '''
+    folder_exists = os.path.exists(directory)
+    if not folder_exists:
+        os.makedirs(directory)
+    return folder_exists
 
 import argparse
+
+MAIN_DIR_SERGIO = [
+    "/home/jovyan/shared_bailoni/scratch",
+    "/home/jovyan/shared_bailoni/g_shared",
+    "/home/jovyan/shared_bailoni/data_bailoni",
+    "/home/jovyan/shared_bailoni/g_alexandr",
+]
 
 shortcuts_keys = ["s", "g", "d", "a"]
 
@@ -56,6 +71,8 @@ if __name__ == '__main__':
                 given_path_base = MAIN_DIR_SERVER[idx]
             elif MAIN_DIR_MAC[idx] in dir_path:
                 given_path_base = MAIN_DIR_MAC[idx]
+            elif MAIN_DIR_SERGIO[idx] in dir_path:
+                given_path_base = MAIN_DIR_SERGIO[idx]
             if given_path_base is not None:
                 source_index = idx
                 break
@@ -123,8 +140,10 @@ if __name__ == '__main__':
                     root)
                 os.system(command)
 
-                # TODO: directly tar and transfer the folder
-                # TODO: add spatialdata folders
-                # FIXME: what happens if the folder already exists?
 
-
+# TODO:
+#  - ssh user@remote 'cd /path/to/remote_directory && find . -type d \( -name spatialdata -o -name microscopy \) -prune -o -type d -print' | ssh user@local 'cd /path/to/local_directory && xargs mkdir -p'
+#  - ssh user@remote 'cd /path/to/remote_directory && find . -type d \( -name spatialdata -o -name microscopy \) -prune -o -type f -print' | rsync -av --files-from=- user@remote:/path/to/remote_directory/ /path/to/local_directory/
+#  ssh user@remote 'cd /path/to/remote_directory && find . -type d \( -name spatialdata -o -name microscopy \)' | while read dir; do
+#   ssh user@remote "cd /path/to/remote_directory && tar czf - \"$dir\"" | ssh user@local "cd /path/to/local_directory && mkdir -p \"$(dirname \"$dir\")\" && tar xzf -"
+#  done

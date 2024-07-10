@@ -89,42 +89,41 @@ if __name__ == '__main__':
         os.system(command)
     else:
         # First, we rsync all files/folders in `source_rsync` that are not folders named `microscopy.zarr` (including subfolders) to `target_rsync`:
-        command = 'rsync -a --delete --progress --exclude="microscopy.zarr" "{}" "{}"'.format(
+        command = 'rsync -a --delete --progress --exclude="microscopy.zarr" --exclude="spatialdata.zarr" "{}" "{}"'.format(
             source_rsync, target_rsync)
         os.system(command)
         # We loop over each folder named `microscopy.zarr` in `source_rsync` (including subfolders named `microscopy.zarr`)
         for root, dirs, files in os.walk(source_rsync):
-            if "microscopy.zarr" in dirs:
-                microscopy_zarr_folder = os.path.join(root, "microscopy.zarr")
-                root_folder_target = os.path.join(target_rsync,
-                                                             Path(source_rsync).name,
-                                                             os.path.relpath(root, source_rsync))
-                # Zip the content of the folder named `microscopy.zarr` in `source_rsync`:
-                print("Zipping content of folder '{}'...".format(microscopy_zarr_folder))
-                command = 'cd "{}" && tar -zcf microscopy.zarr.tar.gz microscopy.zarr'.format(
-                    root)
-                os.system(command)
-                # Copy the zipped content to the correct subfolder of `target_rsync`:
-                os.makedirs(root_folder_target, exist_ok=True)
-                command = 'cp "{}/microscopy.zarr.tar.gz" "{}"'.format(
-                    root, root_folder_target)
-                print("Copying zipped content...")
-                os.system(command)
-                # Unzip the zipped content in the correct subfolder of `target_rsync`:
-                print("Unzipping content and cleaning up...")
-                command = 'cd "{}" && tar -xzf microscopy.zarr.tar.gz'.format(
-                    root_folder_target)
-                os.system(command)
-                # Remove the zipped content in the correct subfolder of `target_rsync` and the zipped content in `source_rsync`:
-                command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
-                    root_folder_target)
-                os.system(command)
-                command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
-                    root)
-                os.system(command)
+            for one_dir in dirs:
+                if one_dir == "microscopy.zarr" or one_dir == "spatialdata.zarr":
+                    microscopy_zarr_folder = os.path.join(root, one_dir)
+                    root_folder_target = os.path.join(target_rsync,
+                                                                 Path(source_rsync).name,
+                                                                 os.path.relpath(root, source_rsync))
+                    # Zip the content of the folder named `microscopy.zarr` in `source_rsync`:
+                    print("Zipping content of folder '{}'...".format(microscopy_zarr_folder))
+                    command = 'cd "{}" && tar -zcf microscopy.zarr.tar.gz {}'.format(
+                        root, one_dir)
+                    os.system(command)
+                    # Copy the zipped content to the correct subfolder of `target_rsync`:
+                    os.makedirs(root_folder_target, exist_ok=True)
+                    command = 'cp "{}/microscopy.zarr.tar.gz" "{}"'.format(
+                        root, root_folder_target)
+                    print("Copying zipped content...")
+                    os.system(command)
+                    # Unzip the zipped content in the correct subfolder of `target_rsync`:
+                    print("Unzipping content and cleaning up...")
+                    command = 'cd "{}" && tar -xzf microscopy.zarr.tar.gz'.format(
+                        root_folder_target)
+                    os.system(command)
+                    # Remove the zipped content in the correct subfolder of `target_rsync` and the zipped content in `source_rsync`:
+                    command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
+                        root_folder_target)
+                    os.system(command)
+                    command = 'rm "{}/microscopy.zarr.tar.gz"'.format(
+                        root)
+                    os.system(command)
 
-                # TODO: directly tar and transfer the folder
-                # TODO: add spatialdata folders
-                # FIXME: what happens if the folder already exists?
-
+                    # TODO: directly tar and transfer the folder
+                    # FIXME: what happens if the folder already exists?
 

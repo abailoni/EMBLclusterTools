@@ -79,7 +79,8 @@ if __name__ == '__main__':
     source_dir = os.path.join(dir_path_mac, "") if is_dir else dir_path_mac
     rsync_options = "-zar" if is_dir else "-avz"
     # TODO: add customizable exclude and include arguments
-    command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args --exclude="*.h5ad" -e "ssh -p 22" "{}" "{}:{}"'.format(
+    command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args -e "ssh -p 22" "{}" "{}:{}"'.format(
         rsync_options, target_dir, source_dir, server_name, target_dir)
+    # command = 'rsync {} --progress --rsync-path="mkdir -p {} && rsync" --protect-args --include="*/" --include="*.h5ad" --exclude="*" -e "ssh -p 22" "{}" "{}:{}"'.format(
     print(command)
     os.system(command)
